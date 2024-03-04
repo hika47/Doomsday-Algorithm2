@@ -1,0 +1,59 @@
+# Importation de la fonction n depuis le script contenant les fonctions
+from exercice2 import n
+
+# Fonction pour saisir une date
+def input_date():
+    # Saisie de la date sous forme littérale ou séparée
+    date_str = input("Entrez une date au format 'jj/mm/aaaa' ou séparée par espaces (jour mois année): ")
+    # Séparation de la saisie en jour, mois, année
+    parts = date_str.split('/') if '/' in date_str else date_str.split()
+    # Conversion des parties en entiers
+    day, month, year = map(int, parts)
+    return day, month, year
+
+# Fonction pour afficher si une année est bissextile ou non
+def print_leap_year(year):
+    if n(year)['is_leap_year'](year):
+        print(f"L'année {year} est bissextile.")
+    else:
+        print(f"L'année {year} n'est pas bissextile.")
+
+# Fonction pour afficher la balise du siècle et le nom du jour de la semaine
+def print_century_anchor_weekday(year):
+    cc, _ = n(year)['split'](year)
+    anchor = n(year)['anchor'](year)
+    day_of_week = n(year)['day_to_string'](anchor)
+    print(f"Balise du siècle : {cc}, Jour de la semaine : {anchor} ({day_of_week})")
+
+# Fonction pour afficher le décalage annuel
+def print_annual_drift(year):
+    drift = n(year)['drift'](year)
+    print(f"Décalage annuel : {drift}")
+
+# Fonction pour afficher le jour clé et le nom du jour de la semaine
+def print_doomsday_weekday(year):
+    doomsday = n(year)['doomsday_value'](year)
+    day_of_week = n(year)['day_to_string'](doomsday)
+    print(f"Jour clé : {doomsday} ({day_of_week})")
+
+# Fonction pour afficher la date du jour clé du mois
+def print_doomsday_month(year, month):
+    doom_day, _ = n(year)['nearest_doomsday'](1, month, year)
+    print(f"Jour clé du mois : {doom_day}/{month}/{year}")
+
+# Fonction pour afficher le nom du jour de la semaine d'une date demandée
+def print_weekday_of_date(day, month, year):
+    day_of_week = n(year)['weekday'](day, month, year)
+    day_name = n(year)['day_to_string'](day_of_week)
+    print(f"Le {day}/{month}/{year} correspond à un {day_name}.")
+
+# Saisie de la date
+day, month, year = input_date()
+
+# Affichage des informations demandées
+print_leap_year(year)
+print_century_anchor_weekday(year)
+print_annual_drift(year)
+print_doomsday_weekday(year)
+print_doomsday_month(year, month)
+print_weekday_of_date(day, month, year)
