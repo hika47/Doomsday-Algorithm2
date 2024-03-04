@@ -1,0 +1,56 @@
+def n(year):
+    # a. Fonction pour diviser une année en partie séculaire et infraséculaire
+    def split(year):
+        cc = year // 100
+        yy = year % 100
+        return cc, yy
+
+    # b. Fonction pour obtenir la balise du siècle d'une année
+    def anchor(year):
+        cc, _ = split(year)
+        return (5 * (cc % 4) + 2) % 7
+
+    # c. Fonction pour obtenir le décalage annuel d'une année
+    def drift(year):
+        _, yy = split(year)
+        return yy // 4
+
+    # d. Fonction pour vérifier si une année est bissextile
+    def is_leap_year(year):
+        if (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0):
+            return True
+        return False
+
+    # e. Fonction pour obtenir le jour clé d'une année
+    def doomsday_value(year):
+        return (anchor(year) + drift(year)) % 7
+
+    # f. Fonction pour trouver le jour clé le plus proche d'une date donnée
+    def nearest_doomsday(dd, mm, yyyy):
+        doom_day = doomsday_value(yyyy)
+        delta = (dd - doom_day) % 7
+        return doom_day, delta
+
+    # g. Fonction pour obtenir le nom du jour de la semaine en français
+    def day_to_string(day_value):
+        jours = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"]
+        return jours[day_value]
+
+    # h. Fonction pour obtenir le numéro du jour de la semaine d'une date donnée
+    def weekday(dd, mm, yyyy):
+        _, delta = nearest_doomsday(dd, mm, yyyy)
+        doom_day, _ = nearest_doomsday(dd, mm, yyyy)
+        day_of_week = (doom_day + delta) % 7
+        return day_of_week
+    
+    # Retourne un dictionnaire contenant toutes les fonctions
+    return {
+        'split': split,
+        'anchor': anchor,
+        'drift': drift,
+        'is_leap_year': is_leap_year,
+        'doomsday_value': doomsday_value,
+        'nearest_doomsday': nearest_doomsday,
+        'day_to_string': day_to_string,
+        'weekday': weekday
+    }
